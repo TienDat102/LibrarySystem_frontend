@@ -1,21 +1,20 @@
 import React from 'react';
-import { useEffect } from 'react';
 import { Button, Card, Form, Input, message } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from 'axios';
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
-import { Link, useLocation } from 'react-router-dom';
 import images from '~/assets/images';
 
 const cx = classNames.bind(styles);
 
 function Login() {
   const navigate = useNavigate();
+
   const onFinish = async (values) => {
     try {
       const response = await axios.post('https://librarysystem-backend.onrender.com/api/v1/login', values, {
-        withCredentials: true
+        withCredentials: true  
       });
       if (response.data.success) {
         message.success("Đăng nhập thành công!");
@@ -37,8 +36,7 @@ function Login() {
         </Link>
       </div>
       <Card className={cx('login-card')} title="Đăng nhập">
-        <Form name="login" onFinish={onFinish}
-          layout="vertical">
+        <Form name="login" onFinish={onFinish} layout="vertical">
           <Form.Item label="Email" name="email" rules={[{ required: true, message: 'Vui lòng nhập email!' }]}>
             <Input />
           </Form.Item>
@@ -51,7 +49,7 @@ function Login() {
               Đăng nhập
             </Button>
             <Link to="/register">
-              <Button type='text' htmlType="submit">
+              <Button type='text' htmlType="button">
                 Đăng ký
               </Button>
             </Link>
@@ -63,4 +61,3 @@ function Login() {
 }
 
 export default Login;
-
