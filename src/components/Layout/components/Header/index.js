@@ -34,9 +34,7 @@ const handleLogout = async () => {
             credentials: 'include',
         });
 
-        // Xóa cookie
         deleteCookie('jwt'); 
-
         setCurrentUser(false); 
         navigate('/');
         window.location.reload();
