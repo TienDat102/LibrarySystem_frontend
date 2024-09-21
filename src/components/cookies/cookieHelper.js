@@ -8,14 +8,15 @@ export function getCookie(cname) {
 
 // Hàm tạo cookie
 export const setCookie = (name, value, options = {}) => {
-    let expires = '';
-    if (options.expires) {
-        const date = new Date(options.expires);
-        expires = `; expires=${date.toUTCString()}`;
-    } else if (options.maxAge) {
-        expires = `; max-age=${options.maxAge}`;
+    let expires = options.expires;
+
+    if (typeof expires === 'number') {
+        const date = new Date();
+        date.setTime(date.getTime() + (expires * 24 * 60 * 60 * 1000)); 
+        expires = date.toUTCString();
     }
-    document.cookie = `${name}=${value || ''}${expires}; path=${options.path || '/'}`;
+
+    document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=None; Secure`;
 };
 
 
