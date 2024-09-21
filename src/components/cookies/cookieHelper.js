@@ -1,4 +1,4 @@
-// src/cookies/cookieHelper.js
+// src/components/cookies/cookieHelper.js
 import Cookies from 'js-cookie';
 
 // Hàm lấy cookie
@@ -7,14 +7,23 @@ export function getCookie(cname) {
 }
 
 // Hàm tạo cookie
-export function setCookie(cname, cvalue, exdays) {
-    Cookies.set(cname, cvalue, { expires: exdays, path: '/' });
-}
+export const setCookie = (name, value, options = {}) => {
+    let expires = '';
+    if (options.expires) {
+        const date = new Date(options.expires);
+        expires = `; expires=${date.toUTCString()}`;
+    } else if (options.maxAge) {
+        expires = `; max-age=${options.maxAge}`;
+    }
+    document.cookie = `${name}=${value || ''}${expires}; path=${options.path || '/'}`;
+};
+
 
 // Hàm xóa cookie
-export function deleteCookie(cname) {
-    Cookies.remove(cname);
-}
+export const deleteCookie = (cname) => {
+    document.cookie = `${cname}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+};
+
 
 // Hàm xóa tất cả cookie
 export function deleteAllCookies() {

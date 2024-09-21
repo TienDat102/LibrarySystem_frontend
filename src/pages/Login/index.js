@@ -1,10 +1,12 @@
 import React from 'react';
 import { Button, Card, Form, Input, message } from "antd";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
+import { Link } from 'react-router-dom';
 import images from '~/assets/images';
+import { setCookie } from '~/components/cookies/cookieHelper'; // Nhập hàm setCookie
 
 const cx = classNames.bind(styles);
 
@@ -13,10 +15,10 @@ function Login() {
 
   const onFinish = async (values) => {
     try {
-      const response = await axios.post('https://librarysystem-backend.onrender.com/api/v1/login', values, {
-        withCredentials: true  
-      });
+      const response = await axios.post('https://librarysystem-backend.onrender.com/api/v1/login', values);
       if (response.data.success) {
+        // Lưu token vào cookie
+        setCookie('jwt', response.data.token, { path: '/', maxAge: 3600 }); // Điều chỉnh thời gian sống của cookie nếu cần
         message.success("Đăng nhập thành công!");
         navigate("/");
       } else {
@@ -49,7 +51,7 @@ function Login() {
               Đăng nhập
             </Button>
             <Link to="/register">
-              <Button type='text' htmlType="button">
+              <Button type='text' htmlType="submit">
                 Đăng ký
               </Button>
             </Link>
