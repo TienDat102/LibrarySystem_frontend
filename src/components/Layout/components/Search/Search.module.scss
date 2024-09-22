@@ -23,12 +23,17 @@
         border: 1.5px solid rgba(22,24,35,0.2);
     }
 }
-.search-result{
-    position: relative;
-    width: 330px;
-    height: var(--search-height);
-    padding-left: 16px;
-    display: flex;
+.search-result {
+    position: absolute; 
+    top: 100%; 
+    left: 0;
+    width: 100%; 
+    max-height: 400px; 
+    background-color: #fff; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    border-radius: var(--border-radius);
+    overflow: auto; 
+    z-index: 99; 
 }
 .search-title {
     padding: 5px 12px;
