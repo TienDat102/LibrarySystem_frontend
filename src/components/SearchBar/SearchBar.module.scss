@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
     grid-gap: 16px;
+    align-items: center;
     padding: 6px 16px;
     cursor: pointer;
 
@@ -11,23 +12,21 @@
 }
 
 .cover {
-    width: 100%;
-    height: 0;
-    padding-top: 150%; 
+    width: 80px;
+    height: 120px;
     object-fit: cover;
 }
 
 .info {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-top: 12px;
+    flex: 1;
+    margin-left: 12px;
 }
 
 .namebook {
     font-size: 16px;
     font-weight: 500;
 }
+
 
 .author {
     font-size: 14px;
