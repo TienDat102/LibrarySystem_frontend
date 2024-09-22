@@ -1,8 +1,9 @@
 .wrapper {
-    display: flex;
-    align-items: center;
+    display: block; // Đảm bảo toàn bộ SearchBar bao trùm kết quả
+    width: 100%; // Để đảm bảo nó chiếm hết chiều rộng
     padding: 6px 16px;
     cursor: pointer;
+    overflow: hidden; // Chặn phần bị tràn nếu có
 
     &:hover {
         background: rgba(22, 24, 35, 0.03);
@@ -13,18 +14,18 @@
     width: 80px;
     height: 120px;
     object-fit: cover;
+    float: left; // Đảm bảo ảnh hiển thị bên cạnh thông tin sách
+    margin-right: 12px;
 }
 
 .info {
-    flex: 1;
-    margin-left: 12px;
+    overflow: hidden; // Đảm bảo nội dung không bị tràn ra ngoài
 }
 
 .namebook {
     font-size: 16px;
     font-weight: 500;
 }
-
 
 .author {
     font-size: 14px;
