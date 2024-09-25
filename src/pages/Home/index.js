@@ -98,7 +98,7 @@ function Home() {
             </div>
           ))
         ) : (
-          <p>Không có sách nào.</p>
+          <p>Không có sách để hiển thị!</p>
         )}
       </div>
       <Pagination
