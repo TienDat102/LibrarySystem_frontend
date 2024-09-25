@@ -102,7 +102,7 @@ function References() {
             </div>
           ))
         ) : (
-          <p>No books available.</p>
+          <p>Không có sách để hiển thị!</p>
         )}
       </div>
       <Pagination
