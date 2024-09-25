@@ -109,7 +109,7 @@ function Result() {
             </div>
           ))
         ) : (
-          <p>No books found.</p>
+          <p>Không có kết quả!</p>
         )}
       </div>
       <Pagination
