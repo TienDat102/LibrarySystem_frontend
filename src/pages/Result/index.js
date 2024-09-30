@@ -30,7 +30,7 @@ function Result() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/allBook?search=${encodeURIComponent(query || '')}&subcategory=${encodeURIComponent(subcategory || '')}`)
+    fetch(`https://librarysystem-backend.onrender.com/api/v1/allBook?search=${encodeURIComponent(query || '')}&subcategory=${encodeURIComponent(subcategory || '')}`)
       .then(response => response.json())
       .then(data => setBooks(data || []))
       .catch(error => console.error('Error fetching books:', error))
@@ -52,7 +52,7 @@ function Result() {
       return;
     }
 
-    fetch('http://localhost:5000/api/v1/borrow', {
+    fetch('https://librarysystem-backend.onrender.com/api/v1/borrow', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ function Result() {
       })
       .then(() => {
         alert('Đăng ký thành công!');
-        fetch(`http://localhost:5000/api/v1/allBook?search=${encodeURIComponent(query || '')}&subcategory=${encodeURIComponent(subcategory || '')}`)
+        fetch(`https://librarysystem-backend.onrender.com/api/v1/allBook?search=${encodeURIComponent(query || '')}&subcategory=${encodeURIComponent(subcategory || '')}`)
           .then(response => response.json())
           .then(data => setBooks(data || []))
           .catch(error => console.error('Error fetching updated books:', error));
