@@ -25,8 +25,9 @@ function References() {
       .trim();
   };
 
+  // Lấy dữ liệu sách khi component mount
   useEffect(() => {
-    fetch('https://librarysystem-backend.onrender.com/api/v1/allBook?genre=Tailieu')
+    fetch('http://localhost:5000/api/v1/allBook?genre=Tailieu')
       .then(response => response.json())
       .then(data => setBooks(data || []))
       .catch(error => console.error('Error fetching books:', error))
@@ -38,21 +39,23 @@ function References() {
   const currentBooks = books.slice(indexOfFirstBook, indexOfLastBook);
   const totalPages = Math.ceil(books.length / BOOKS_PER_PAGE);
 
+  // Xử lý khi người dùng đăng ký mượn sách
   const handleRegister = (bookId) => {
     console.log("BookID đăng ký:", bookId);
 
     const token = getCookie('jwt');
+    console.log("Token:", token); // Kiểm tra token có được lấy đúng không
     if (!token) {
       alert('Bạn cần đăng nhập để mượn sách.');
       navigate('/login');
       return;
     }
 
-    fetch('https://librarysystem-backend.onrender.com/api/v1/borrow', {
+    fetch('http://localhost:5000/api/v1/borrow', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`  // Thêm token vào header
       },
       body: JSON.stringify({
         bookId: bookId,
@@ -61,6 +64,7 @@ function References() {
       })
     })
       .then(response => {
+        console.log(response);  // Log phản hồi từ API
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -68,7 +72,8 @@ function References() {
       })
       .then(data => {
         alert('Đăng ký thành công!');
-        fetch('https://librarysystem-backend.onrender.com/api/v1/allBook?genre=Tailieu')
+        // Lấy lại danh sách sách cập nhật sau khi đăng ký thành công
+        fetch('http://localhost:5000/api/v1/allBook?genre=Tailieu')
           .then(response => response.json())
           .then(data => setBooks(data || []))
           .catch(error => console.error('Error fetching updated books:', error));
@@ -85,7 +90,7 @@ function References() {
       <div className={cx('book-list')}>
         {currentBooks.length > 0 ? (
           currentBooks.map((book) => (
-            <div className={cx('book-item')} key={book.id}>
+            <div className={cx('book-item')} key={book._id}> {/* Sửa từ book.id thành book._id */}
               <Link to={`/book/${convertToSlug(book.title)}`} className={cx('book-wrapper')}>
                 <img
                   className={cx('book-cover')}
@@ -97,12 +102,12 @@ function References() {
                 </div>
               </Link>
               <div className={cx('button-book')}>
-                <Button onClick={() => handleRegister(book.id)}>Đăng ký</Button>
+                <Button onClick={() => handleRegister(book._id)}>Đăng ký</Button> {/* Sửa từ book.id thành book._id */}
               </div>
             </div>
           ))
         ) : (
-          <p>Không có sách để hiển thị!</p>
+          <p>Không có sách nào.</p>
         )}
       </div>
       <Pagination
