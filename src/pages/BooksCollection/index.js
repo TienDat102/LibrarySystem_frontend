@@ -15,6 +15,8 @@ function BooksCollection() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  // Function to convert book title to slug
   const convertToSlug = (text) => {
     return text
       .toLowerCase()
@@ -23,8 +25,9 @@ function BooksCollection() {
       .trim();
   };
 
+  // Fetch books data on component mount
   useEffect(() => {
-    fetch('https://librarysystem-backend.onrender.com/api/v1/allBook?genre=Sachtonghop')
+    fetch('http://localhost:5000/api/v1/allBook?genre=Sachtonghop')
       .then(response => response.json())
       .then(data => setBooks(data || []))
       .catch(error => console.error('Error fetching books:', error))
@@ -40,16 +43,18 @@ function BooksCollection() {
     console.log("BookID đăng ký:", bookId)
 
     const token = getCookie('jwt');
+    console.log("Token:", token);  // Kiểm tra xem token có tồn tại không
     if (!token) {
       alert('Bạn cần đăng nhập để mượn sách.');
-      navigate('/login')
-      return
+      navigate('/login');
+      return;
     }
-    fetch(`https://librarysystem-backend.onrender.com/api/v1/borrow`, {
+
+    fetch('http://localhost:5000/api/v1/borrow', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`  // Sử dụng token trong header
       },
       body: JSON.stringify({
         bookId: bookId,
@@ -58,6 +63,7 @@ function BooksCollection() {
       })
     })
       .then(response => {
+        console.log(response);  // Log phản hồi từ API
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -65,7 +71,8 @@ function BooksCollection() {
       })
       .then(data => {
         alert('Đăng ký thành công!');
-        fetch('https://librarysystem-backend.onrender.com/api/v1/allBook?genre')
+        // Lấy lại danh sách sách cập nhật
+        fetch('http://localhost:5000/api/v1/allBook?genre=Sachtonghop')
           .then(response => response.json())
           .then(data => setBooks(data || []))
           .catch(error => console.error('Error fetching updated books:', error));
@@ -76,14 +83,13 @@ function BooksCollection() {
       });
   };
 
-
   return (
     <div className={cx('booksCollection')}>
       <h2>Sách Tổng Hợp</h2>
       <div className={cx('book-list')}>
         {currentBooks.length > 0 ? (
           currentBooks.map((book) => (
-            <div className={cx('book-item')} key={book.id}>
+            <div className={cx('book-item')} key={book._id}> {/* Sửa từ book.id thành book._id */}
               <Link to={`/book/${convertToSlug(book.title)}`} className={cx('book-wrapper')}>
                 <img
                   className={cx('book-cover')}
@@ -95,12 +101,12 @@ function BooksCollection() {
                 </div>
               </Link>
               <div className={cx('button-book')}>
-                <Button onClick={() => handleRegister(book.id)}>Đăng ký</Button>
+                <Button onClick={() => handleRegister(book._id)}>Đăng ký</Button> {/* Sửa từ book.id thành book._id */}
               </div>
             </div>
           ))
         ) : (
-          <p>Không có sách để hiển thị!</p>
+          <p>Không có sách nào.</p>
         )}
       </div>
       <Pagination
